@@ -47,7 +47,7 @@ jobs:
                 (displayName && body.includes(displayName))) &&
                 body.includes('azahar');
 
-            // Only reopen the PR if verification succeeded
+            // Only reopen the PR and remove the label if verification succeeded
             if (verified) {
               await github.rest.pulls.update({
                 owner,
@@ -59,8 +59,16 @@ jobs:
                 owner,
                 repo,
                 issue_number: issue.number,
-                body: 'Verification successful! Pull request has been reopened. You may also edit your PR description to remove the block of text between `---`.',
+                body: 'Verification successful! Pull request has been reopened. Please also edit your PR description to remove the block of text between `---` to make the description easier to read.',
               });
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: issue.number,
+                  name: 'needs verification',
+                });
+              } catch {}
             } else {
               await github.rest.issues.createComment({
                 owner,
@@ -69,13 +77,3 @@ jobs:
                 body: 'Verification failed! Pull request will remain closed.',
               });
             }
-            
-            // Finally remove the label
-            try {
-              await github.rest.issues.removeLabel({
-                owner,
-                repo,
-                issue_number: issue.number,
-                name: 'needs verification',
-              });
-            } catch {}

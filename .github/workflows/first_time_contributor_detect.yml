@@ -47,5 +47,5 @@ jobs:
               owner,
               repo,
               issue_number: pr.number,
-              body: 'Welcome to the Azahar Emulator repository! Due to the surge of AI bots we have decided to add an extra verification step to new contributors. Please follow the exact instructions that were told to you in order to reopen the PR.',
+              body: 'Welcome to the Azahar Emulator repository! Due to the surge of AI bots we have decided to add an extra verification step to new contributors. Please follow the exact instructions in your own written Pull Request description to reopen it.',
             });
